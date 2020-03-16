@@ -54,21 +54,16 @@ public class Main {
 
     System.out.println();
     
-    Comparator<Student> compareAverage = (Student A, Student B)
-            -> Double.compare(A.getAverage(),B.getAverage());
+       Collections.sort(students, (A, B) -> {
+        int averageCompare = Double.compare(B.getAverage(), A.getAverage());
+        int firstNameCompare = A.getLastName().compareTo(B.getLastName());
+        int secondNameCompare = A.getFirstName().compareTo(B.getFirstName());
 
-    Comparator<Student> compareLastName = (Student A, Student B)
-            -> A.getLastName().compareTo(B.getLastName());
-
-    Comparator<Student> compareFirstName = (Student A, Student B)
-            -> A.getFirstName().compareTo(B.getFirstName());
-            
-            if(compareAverage.equals(0) && compareLastName.equals(0)) {
-                Collections.sort(students,compareFirstName);
-            } else if (compareAverage.equals(0)) {
-                Collections.sort(students,compareLastName);
-            } else Collections.sort(students,compareAverage.reversed());
-            
+        if (averageCompare == 0 && firstNameCompare == 0) return secondNameCompare;
+        else if (averageCompare == 0) return firstNameCompare;
+        else return averageCompare;
+        
+    });
             try {
                 FileWriter myWriter = new FileWriter("Facultate/studenti.txt");
                 students.forEach(el -> {
